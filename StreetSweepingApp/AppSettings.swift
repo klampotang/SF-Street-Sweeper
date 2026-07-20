@@ -10,7 +10,7 @@ import Observation
 
 @Observable
 class AppSettings {
-    static let defaultThemeColor: Color = .brown
+    static let defaultThemeColor: Color = .blue
     static let defaultLeftColor: Color = .orange
     static let defaultRightColor: Color = .green
 

@@ -15,7 +15,7 @@ struct GeoJSONFeatureCollection: Decodable {
 
 struct LiveSweepingFeature: Decodable, Identifiable {
     var id: String { properties.blocksweepid ?? UUID().uuidString }
-    let geometry: LiveGeometry
+    let geometry: LiveGeometry?
     let properties: LiveProperties
 }
 

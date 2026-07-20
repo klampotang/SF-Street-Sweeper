@@ -18,4 +18,6 @@ enum MapConstants {
 enum APIConstants {
     static let apiUrl = "https://data.sfgov.org/resource/yhqp-riqs.geojson"
     static let weekdayKey = "weekday"
+    static let limitKey = "$limit"
+    static let limit = "10000"
 }

@@ -20,7 +20,10 @@ class StreetSweepingViewModel: ObservableObject {
         let dayString = day.apiDayString
         
         var urlComponents = URLComponents(string: APIConstants.apiUrl)!
-        var queryItems = [URLQueryItem(name: APIConstants.weekdayKey, value: dayString)]
+        var queryItems = [
+            URLQueryItem(name: APIConstants.weekdayKey, value: dayString),
+            URLQueryItem(name: APIConstants.limitKey, value: APIConstants.limit)
+            ]
         
         if let coord = coordinate {
             let latMin = coord.latitude - MapConstants.searchRadiusDegrees

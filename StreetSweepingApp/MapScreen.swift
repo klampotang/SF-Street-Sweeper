@@ -32,11 +32,13 @@ struct MapScreen: View {
                 UserAnnotation()
                 
                 ForEach(viewModel.features) { feature in
-                    MapPolyline(coordinates: feature.geometry.clCoordinates)
-                        .stroke(
-                            feature.properties.cnnrightleft == "R" ? settings.rightColor : settings.leftColor,
-                            lineWidth: MapConstants.lineWidth
-                        )
+                    if let geometry = feature.geometry {
+                        MapPolyline(coordinates: geometry.clCoordinates)
+                            .stroke(
+                                feature.properties.cnnrightleft == "R" ? settings.rightColor : settings.leftColor,
+                                lineWidth: MapConstants.lineWidth
+                            )
+                    }
                 }
             }
             .mapControls {
@@ -54,6 +56,7 @@ struct MapScreen: View {
                     .padding(MapConstants.progressViewPadding)
                     .background(.ultraThinMaterial)
                     .cornerRadius(MapConstants.progressViewCornerRadius)
+                    .frame(maxHeight: .infinity, alignment: .center)
             }
             
             if viewModel.errorMessage != nil {
@@ -88,8 +91,8 @@ struct MapScreen: View {
             setDayOfWeek()
             locationManager.start()
         }
-        .task(id: dayOfWeek) {
-            await viewModel.fetchSweepingSchedules(for: dayOfWeek)
+        .task(id: taskID) {
+            await loadSchedules()
         }
         .alert("Something went wrong", isPresented: Binding(
             get: { viewModel.errorMessage != nil },
@@ -97,7 +100,7 @@ struct MapScreen: View {
         )) {
             Button("Try again") {
                 Task {
-                    await viewModel.fetchSweepingSchedules(for: dayOfWeek)
+                    await loadSchedules()
                 }
             }
             Button("Okay", role: .cancel) {
@@ -106,6 +109,25 @@ struct MapScreen: View {
         } message: {
             Text(viewModel.errorMessage ?? "An unknown error occurred.")
         }
+    }
+    
+    private func loadSchedules() async {
+        await viewModel.fetchSweepingSchedules(
+            for: dayOfWeek,
+            near: locationManager.currentLocation?.coordinate
+        )
+    }
+    
+    private var taskID: String {
+        guard let coord = locationManager.currentLocation?.coordinate else {
+                return "\(dayOfWeek.rawValue)-no-location"
+            }
+            
+            // Round to 3 decimal places (~100 meters / ~300 feet)
+            let roundedLat = String(format: "%.3f", coord.latitude)
+            let roundedLon = String(format: "%.3f", coord.longitude)
+            
+            return "\(dayOfWeek.rawValue)-\(roundedLat)-\(roundedLon)"
     }
     
     private func setDayOfWeek() {
