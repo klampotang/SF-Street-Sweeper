@@ -59,10 +59,6 @@ struct MapScreen: View {
                     .frame(maxHeight: .infinity, alignment: .center)
             }
             
-            if viewModel.errorMessage != nil {
-                
-            }
-            
             Menu {
                 ForEach(DayOfWeek.allCases) { day in
                     Button {
