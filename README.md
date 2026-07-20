@@ -69,7 +69,7 @@ StreetSweepingApp/
 Street sweeping data is fetched live from the [SF Street Sweeping Schedule dataset](https://data.sfgov.org/Transportation/Street-Sweeping-Schedule/yhqp-riqs/about_data) via the Socrata GeoJSON endpoint. Queries are filtered by day of week and a bounding box around the user's location.
 
 ## Screenshots
-<img width="1206" height="2622" alt="IMG_5988" src="https://github.com/user-attachments/assets/24b10b2b-9860-473f-95fd-f94cae762376" />
+<img width="300" alt="IMG_5988" src="https://github.com/user-attachments/assets/24b10b2b-9860-473f-95fd-f94cae762376" />
 
 ## License
 
