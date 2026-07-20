@@ -8,11 +8,13 @@
 import SwiftUI
 
 struct MapKeyView: View {
+    @Environment(AppSettings.self) private var settings
+
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(AppColor.right)
+                    .fill(settings.rightColor)
                     .frame(width: 16.0, height: 16.0)
                 Text("Right")
                     .foregroundColor(.white)
@@ -20,7 +22,7 @@ struct MapKeyView: View {
             }
             HStack {
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(AppColor.left)
+                    .fill(settings.leftColor)
                     .frame(width: 16.0, height: 16.0)
                 Text("Left")
                     .foregroundColor(.white)
@@ -35,4 +37,5 @@ struct MapKeyView: View {
 
 #Preview {
     MapKeyView()
+        .environment(AppSettings())
 }

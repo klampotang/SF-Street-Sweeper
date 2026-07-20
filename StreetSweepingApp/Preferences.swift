@@ -18,6 +18,8 @@ struct Preferences: View {
             Form {
                 Section(header: Text("Preferences")) {
                     ColorPicker("Accent Color", selection: $settings.themeColor)
+                    ColorPicker("Left Color", selection: $settings.leftColor)
+                    ColorPicker("Right Color", selection: $settings.rightColor)
                 }
             }
             .navigationTitle("Preferences")

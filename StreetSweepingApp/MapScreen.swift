@@ -11,6 +11,7 @@ import MapKit
 struct MapScreen: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject private var viewModel = StreetSweepingViewModel()
+    @Environment(AppSettings.self) private var settings
     
     @State private var dayOfWeek: DayOfWeek = .sunday
     @State private var cameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .region(
@@ -33,7 +34,7 @@ struct MapScreen: View {
                 ForEach(viewModel.features) { feature in
                     MapPolyline(coordinates: feature.geometry.clCoordinates)
                         .stroke(
-                            feature.properties.cnnrightleft == "R" ? AppColor.right : AppColor.left,
+                            feature.properties.cnnrightleft == "R" ? settings.rightColor : settings.leftColor,
                             lineWidth: MapConstants.lineWidth
                         )
                 }
