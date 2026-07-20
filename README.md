@@ -11,8 +11,8 @@ A SwiftUI iOS app that shows San Francisco street sweeping schedules on an inter
 - **Location permission handling** — graceful banners guide the user through granting or re-enabling location access
 
 ## Screenshots
+<img width="1206" height="2622" alt="IMG_5988" src="https://github.com/user-attachments/assets/24b10b2b-9860-473f-95fd-f94cae762376" />
 
-> Add screenshots here once the app is running.
 
 ## Requirements
 
@@ -27,7 +27,7 @@ A SwiftUI iOS app that shows San Francisco street sweeping schedules on an inter
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/<your-username>/Street-Sweeper-App-SwiftUI.git
+git clone https://github.com/klampotang/Street-Sweeper-App-SwiftUI.git
 cd Street-Sweeper-App-SwiftUI
 ```
 
