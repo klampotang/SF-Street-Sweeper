@@ -84,13 +84,8 @@ struct MapScreen: View {
             setDayOfWeek()
             locationManager.start()
         }
-        .task {
+        .task(id: dayOfWeek) {
             await viewModel.fetchSweepingSchedules(for: dayOfWeek)
-        }
-        .onChange(of: dayOfWeek) { newDay in
-            Task {
-                await viewModel.fetchSweepingSchedules(for: newDay)
-            }
         }
     }
     
