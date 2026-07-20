@@ -48,7 +48,7 @@ class StreetSweepingViewModel: ObservableObject {
         urlComponents.queryItems = queryItems
         guard let url = urlComponents.url else { return }
         var request = URLRequest(url: url)
-        // request.setValue("YOUR_DATASF_APP_TOKEN", forHTTPHeaderField: "X-App-Token") TODO
+        request.setValue(Config.dataSFAppToken, forHTTPHeaderField: "X-App-Token")
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
