@@ -34,7 +34,7 @@ struct MapScreen: View {
                     MapPolyline(coordinates: feature.geometry.clCoordinates)
                         .stroke(
                             feature.properties.cnnrightleft == "R" ? AppColor.right : AppColor.left,
-                            lineWidth: 4
+                            lineWidth: MapConstants.lineWidth
                         )
                 }
             }
@@ -44,10 +44,9 @@ struct MapScreen: View {
             }
             .overlay(alignment: .bottomLeading) {
                 MapKeyView()
-                    .padding(30)
+                    .padding(MapConstants.keyPadding)
             }
             .mapStyle(.standard(pointsOfInterest: .excludingAll))
-            .ignoresSafeArea()
             
             if viewModel.isLoading {
                 ProgressView("Updating streets...")

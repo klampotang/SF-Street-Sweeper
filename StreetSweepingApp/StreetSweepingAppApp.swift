@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct StreetSweepingAppApp: App {
+    @State private var settings = AppSettings() // state is used to instantiate and own our observable classes at the root level
+
     var body: some Scene {
         WindowGroup {
-            MapScreen()
+            MainTabView()
+                .environment(settings)
         }
     }
 }

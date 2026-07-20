@@ -14,9 +14,10 @@ enum AppColor {
 
 enum MapConstants {
     static let searchRadiusDegrees: CGFloat = 0.005
-    static let lineThickness: Int = 4
+    static let lineWidth = 4.0
     static let progressViewPadding = 8.0
     static let progressViewCornerRadius = 8.0
+    static let keyPadding = 30.0
 }
 
 
