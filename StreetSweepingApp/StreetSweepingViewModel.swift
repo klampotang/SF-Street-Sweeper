@@ -11,34 +11,22 @@ import Combine
 
 @MainActor
 class StreetSweepingViewModel: ObservableObject {
-    @Published var features: [LiveSweepingFeature] = []
-    @Published var isLoading = false
-    
-    // Map human-readable days to the exact string tokens DataSF expects
-    func apiDayString(for day: DayOfWeek) -> String {
-        switch day {
-        case .sunday: return "Sun"
-        case .monday: return "Mon"
-        case .tuesday: return "Tues"
-        case .wednesday: return "Wed"
-        case .thursday: return "Thurs"
-        case .friday: return "Fri"
-        case .saturday: return "Sat"
-        }
-    }
+    @Published private(set) var features: [LiveSweepingFeature] = []
+    @Published private(set) var isLoading = false
+    @Published var errorMessage: String?
     
     func fetchSweepingSchedules(for day: DayOfWeek, near coordinate: CLLocationCoordinate2D? = nil) async {
         self.isLoading = true
-        let dayString = apiDayString(for: day)
+        let dayString = day.apiDayString
         
-        var urlComponents = URLComponents(string: "https://data.sfgov.org/resource/yhqp-riqs.geojson")!
-        var queryItems = [URLQueryItem(name: "weekday", value: dayString)]
+        var urlComponents = URLComponents(string: APIConstants.apiUrl)!
+        var queryItems = [URLQueryItem(name: APIConstants.weekdayKey, value: dayString)]
         
         if let coord = coordinate {
-            let latMin = coord.latitude - 0.005
-            let latMax = coord.latitude + 0.005
-            let lonMin = coord.longitude - 0.005
-            let lonMax = coord.longitude + 0.005
+            let latMin = coord.latitude - MapConstants.searchRadiusDegrees
+            let latMax = coord.latitude + MapConstants.searchRadiusDegrees
+            let lonMin = coord.longitude - MapConstants.searchRadiusDegrees
+            let lonMax = coord.longitude + MapConstants.searchRadiusDegrees
             
             // SoQL Bounding Box syntax: within_box(geometry_column, lat_north, lon_west, lat_south, lon_east)
             let boxQuery = "within_box(line, \(latMax), \(lonMin), \(latMin), \(lonMax))"
@@ -59,7 +47,8 @@ class StreetSweepingViewModel: ObservableObject {
             let decodedData = try JSONDecoder().decode(GeoJSONFeatureCollection.self, from: data)
             self.features = decodedData.features
         } catch {
-            print("Error fetching sweeping data from API: \(error)")
+            if (error as? URLError)?.code == .cancelled { return }
+            errorMessage = "Error fetching sweeping data from API: \(error)"
         }
         
         self.isLoading = false

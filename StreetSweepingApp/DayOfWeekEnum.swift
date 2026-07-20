@@ -27,4 +27,16 @@ enum DayOfWeek: Int, CaseIterable, Identifiable {
         case .saturday: return "Saturday"
         }
     }
+    
+    var apiDayString: String {
+        switch self {
+        case .sunday: return "Sun"
+        case .monday: return "Mon"
+        case .tuesday: return "Tues"
+        case .wednesday: return "Wed"
+        case .thursday: return "Thurs"
+        case .friday: return "Fri"
+        case .saturday: return "Sat"
+        }
+    }
 }

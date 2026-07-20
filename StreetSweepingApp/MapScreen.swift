@@ -51,9 +51,13 @@ struct MapScreen: View {
             
             if viewModel.isLoading {
                 ProgressView("Updating streets...")
-                    .padding(8)
+                    .padding(MapConstants.progressViewPadding)
                     .background(.ultraThinMaterial)
-                    .cornerRadius(8)
+                    .cornerRadius(MapConstants.progressViewCornerRadius)
+            }
+            
+            if viewModel.errorMessage != nil {
+                
             }
             
             Menu {
@@ -86,6 +90,21 @@ struct MapScreen: View {
         }
         .task(id: dayOfWeek) {
             await viewModel.fetchSweepingSchedules(for: dayOfWeek)
+        }
+        .alert("Something went wrong", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Button("Try again") {
+                Task {
+                    await viewModel.fetchSweepingSchedules(for: dayOfWeek)
+                }
+            }
+            Button("Okay", role: .cancel) {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            Text(viewModel.errorMessage ?? "An unknown error occurred.")
         }
     }
     
