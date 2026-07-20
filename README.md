@@ -10,10 +10,6 @@ A SwiftUI iOS app that shows San Francisco street sweeping schedules on an inter
 - **Location-aware** — centers on your current position and filters routes to the area around you
 - **Location permission handling** — graceful banners guide the user through granting or re-enabling location access
 
-## Screenshots
-<img width="1206" height="2622" alt="IMG_5988" src="https://github.com/user-attachments/assets/24b10b2b-9860-473f-95fd-f94cae762376" />
-
-
 ## Requirements
 
 | Requirement | Version |
@@ -71,6 +67,9 @@ StreetSweepingApp/
 ## Data Source
 
 Street sweeping data is fetched live from the [SF Street Sweeping Schedule dataset](https://data.sfgov.org/Transportation/Street-Sweeping-Schedule/yhqp-riqs/about_data) via the Socrata GeoJSON endpoint. Queries are filtered by day of week and a bounding box around the user's location.
+
+## Screenshots
+<img width="1206" height="2622" alt="IMG_5988" src="https://github.com/user-attachments/assets/24b10b2b-9860-473f-95fd-f94cae762376" />
 
 ## License
 
