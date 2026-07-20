@@ -139,4 +139,5 @@ struct MapScreen: View {
 
 #Preview {
     MapScreen()
+        .environment(AppSettings())
 }
