@@ -6,7 +6,7 @@
 //
 
 import CoreLocation
-internal import Combine
+import Combine
 
 @MainActor
 final class LocationManager: NSObject, ObservableObject {
