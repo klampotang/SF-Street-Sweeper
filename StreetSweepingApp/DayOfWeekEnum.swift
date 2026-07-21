@@ -34,7 +34,7 @@ enum DayOfWeek: Int, CaseIterable, Identifiable {
         case .monday: return "Mon"
         case .tuesday: return "Tues"
         case .wednesday: return "Wed"
-        case .thursday: return "Thurs"
+        case .thursday: return "Thu"
         case .friday: return "Fri"
         case .saturday: return "Sat"
         }
