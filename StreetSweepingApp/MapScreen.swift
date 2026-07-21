@@ -14,6 +14,7 @@ struct MapScreen: View {
     @Environment(AppSettings.self) private var settings
     
     @State private var dayOfWeek: DayOfWeek = .sunday
+    @State private var visibleRegion: MKCoordinateRegion?
     @State private var cameraPosition: MapCameraPosition = .userLocation(followsHeading: true, fallback: .region(
         MKCoordinateRegion(
             center: CLLocationCoordinate2D(
@@ -40,6 +41,9 @@ struct MapScreen: View {
                             )
                     }
                 }
+            }
+            .onMapCameraChange(frequency: .onEnd) { context in
+                visibleRegion = context.region
             }
             .mapControls {
                 MapCompass()
@@ -110,20 +114,22 @@ struct MapScreen: View {
     private func loadSchedules() async {
         await viewModel.fetchSweepingSchedules(
             for: dayOfWeek,
-            near: locationManager.currentLocation?.coordinate
+            in: visibleRegion
         )
     }
     
     private var taskID: String {
-        guard let coord = locationManager.currentLocation?.coordinate else {
-                return "\(dayOfWeek.rawValue)-no-location"
-            }
-            
-            // Round to 3 decimal places (~100 meters / ~300 feet)
-            let roundedLat = String(format: "%.3f", coord.latitude)
-            let roundedLon = String(format: "%.3f", coord.longitude)
-            
-            return "\(dayOfWeek.rawValue)-\(roundedLat)-\(roundedLon)"
+        guard let region = visibleRegion else {
+            return "\(dayOfWeek.rawValue)-no-region"
+        }
+        
+        // Round values to 3 decimal places to prevent micro-jitter cancellations
+        let lat = String(format: "%.3f", region.center.latitude)
+        let lon = String(format: "%.3f", region.center.longitude)
+        let latSpan = String(format: "%.3f", region.span.latitudeDelta)
+        let lonSpan = String(format: "%.3f", region.span.longitudeDelta)
+        
+        return "\(dayOfWeek.rawValue)-\(lat)-\(lon)-\(latSpan)-\(lonSpan)"
     }
     
     private func setDayOfWeek() {

@@ -8,6 +8,7 @@ import SwiftUI
 import Foundation
 import CoreLocation
 import Combine
+import MapKit
 
 @MainActor
 class StreetSweepingViewModel: ObservableObject {
@@ -15,7 +16,7 @@ class StreetSweepingViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published var errorMessage: String?
     
-    func fetchSweepingSchedules(for day: DayOfWeek, near coordinate: CLLocationCoordinate2D? = nil) async {
+    func fetchSweepingSchedules(for day: DayOfWeek, in region: MKCoordinateRegion? = nil) async {
         self.isLoading = true
         let dayString = day.apiDayString
         
@@ -25,11 +26,14 @@ class StreetSweepingViewModel: ObservableObject {
             URLQueryItem(name: APIConstants.limitKey, value: APIConstants.limit)
             ]
         
-        if let coord = coordinate {
-            let latMin = coord.latitude - MapConstants.searchRadiusDegrees
-            let latMax = coord.latitude + MapConstants.searchRadiusDegrees
-            let lonMin = coord.longitude - MapConstants.searchRadiusDegrees
-            let lonMax = coord.longitude + MapConstants.searchRadiusDegrees
+        if let region = region {
+            let padding = 1.2
+            let halfLatDelta = (region.span.latitudeDelta * padding) / 2.0
+            let halfLonDelta = (region.span.longitudeDelta * padding) / 2.0
+            let latMin = region.center.latitude - halfLatDelta
+            let latMax = region.center.latitude + halfLatDelta
+            let lonMin = region.center.longitude - halfLonDelta
+            let lonMax = region.center.longitude + halfLonDelta
             
             // SoQL Bounding Box syntax: within_box(geometry_column, lat_north, lon_west, lat_south, lon_east)
             let boxQuery = "within_box(line, \(latMax), \(lonMin), \(latMin), \(lonMax))"
